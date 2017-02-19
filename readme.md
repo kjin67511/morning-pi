@@ -13,6 +13,7 @@
 5m(3)/22m(13) : 5분 후 3 정류장 전 / 22분 후 13 정류장 전     
 
 ### 날씨정보
+
 -1°L/3°R60 : 현재 영하1도 흐림 /12 시간 후 영상 3도 60%확률 비
 
 날씨 코드
@@ -32,8 +33,18 @@
 
 ### 추가모듈
 
-* [Adafruit_Python_Char_LCD](https://github.com/adafruit/Adafruit_Python_CharLCD)
-* sudo pip install grequests
+
+```
+sudo apt-get update
+sudo apt-get install build-essential python-dev python-smbus python-pip
+sudo pip install RPi.GPIO
+sudo pip install grequests
+```
+[Adafruit_Python_Char_LCD](https://github.com/adafruit/Adafruit_Python_CharLCD)
+
+```
+sudo python setup.py install
+```
 
 ### API 및 추가정보
 

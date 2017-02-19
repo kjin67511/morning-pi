@@ -1,0 +1,35 @@
+[gpio]
+input_pin: 31
+
+[lcd]
+rs: 27
+en: 22
+d4: 25
+d5: 24
+d6: 23
+d7: 18
+
+
+[bus]
+station_id: 01190
+route_id: 100100086
+
+[weather]
+nx: 60
+ny: 127
+
+[weather_basetime_delta]
+live: -45
+forecast: -15
+
+[api_key]
+bus:
+weather:
+
+
+[run]
+interval: 30
+duration: 1800
+
+[schedule]
+time: 06:20

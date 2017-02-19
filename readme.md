@@ -37,12 +37,13 @@
 ```
 sudo apt-get update
 sudo apt-get install build-essential python-dev python-smbus python-pip
-sudo pip install RPi.GPIO
-sudo pip install grequests
+sudo pip install RPi.GPIO grequests
 ```
 [Adafruit_Python_Char_LCD](https://github.com/adafruit/Adafruit_Python_CharLCD)
 
 ```
+git clone https://github.com/adafruit/Adafruit_Python_CharLCD.git
+cd Adafruit_Python_CharLCD/
 sudo python setup.py install
 ```
 

@@ -72,7 +72,7 @@ http://ws.bus.go.kr/api/rest/busRouteInfo/getBusRouteList?serviceKey=인증키&s
 버스노선번호 : 원하는 버스번호 입력
 
 
-HTTP Request가 정상적으로 처리되면, 해당 버스노선과 일치하는 버스노선정보를 반환함. 버스노선 ID는  <busRouteId>에 들어있음
+HTTP Request가 정상적으로 처리되면, 해당 버스노선과 일치하는 버스노선정보를 반환함. 버스노선 ID는  ```<busRouteId>```에 들어있음
 
 예) 601번 버스
 ```
@@ -118,6 +118,12 @@ HTTP Request가 정상적으로 처리되면, 해당 버스노선과 일치하�
 * bus: 공공데이터포털에서 정류소정보조회를 위해 발급받은 인증키
 * weather: 공공데이터포털에서 동네예보정보조회서비스를 위해 발급받은 인증키
 * rs, en, d4, d5, d6, d7: [참조1](https://learn.adafruit.com/drive-a-16x2-lcd-directly-with-a-raspberry-pi?view=all) [참조2](http://www.rasplay.org/?p=7268)
+
+## 실행
+
+```
+python main.py
+```
 
 
 ## 다음버전

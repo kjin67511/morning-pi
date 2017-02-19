@@ -41,7 +41,7 @@ def start_timer():
 if __name__ == "__main__":
     print("start")
 
-    run()
+    start_timer()
 
     if lcd.lcd is not None:
         try:

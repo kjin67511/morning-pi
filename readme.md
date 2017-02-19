@@ -33,7 +33,7 @@
 ### 추가모듈
 
 * [Adafruit_Python_Char_LCD](https://github.com/adafruit/Adafruit_Python_CharLCD)
-* pip install grequests
+* sudo pip install grequests
 
 ### API 및 추가정보
 

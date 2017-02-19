@@ -22,17 +22,21 @@
 * R : 비
 * W : 눈
 
+## 요구사항
 
-## 준비물
+### 준비물
 
 * 라즈베리파이
 * GPIO 스위치
 * 16x2 LCD
 
-## 설치 요구사항
+### 추가모듈
 
 * [Adafruit_Python_Char_LCD](https://github.com/adafruit/Adafruit_Python_CharLCD)
 * pip install grequests
+
+### API 및 추가정보
+
 * 공공데이터포털 API 인증키
 * 설정 정보: 버스노선 ID, 정류장 ID, 날씨위치좌표XY
 

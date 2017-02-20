@@ -17,11 +17,12 @@ else:
     lcd = LCD.Adafruit_CharLCD(rs, en, d4, d5, d6, d7, 16, 2)
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(input_pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+    GPIO.add_event_detect(input_pin, GPIO.RISING)  # add rising edge detection on a channel
 
 
 def GPIO_input():
     if lcd is not None:
-        return GPIO.input(input_pin)
+        return GPIO.event_detected(input_pin)
     else:
         return False
 

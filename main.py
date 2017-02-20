@@ -62,4 +62,5 @@ if __name__ == "__main__":
                 time.sleep(0.01)
         except KeyboardInterrupt:
             lcd.clear()
-
+    else:  # test purpose in non-rpi
+        run()

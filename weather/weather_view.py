@@ -112,38 +112,43 @@ def weather_forecast_from_json(json, time):
     lowest_delta_sec = datetime.timedelta(days=1).total_seconds()
     nearest_fcstTime_str = None
 
-    # Of forecast list elements, find the item with nearest time to "time" argument
-    #
-    # Given forecast list consists of (9 am, 12 am, 3 pm, 5 pm, 9 pm) and
-    # if "time" argument is 12 (hours) and current time is 8 am
-    # 9pm forecast will be acquired (nearest item from 8am + 12hours)
-    for item in json['response']['body']['items']['item']:
-        time_str = str(item['fcstDate']) + str(item['fcstTime'])
-        t = datetime.datetime.strptime(time_str, '%Y%m%d%H%M')
-        delta_sec = abs((time - t).total_seconds())
+    try:
 
-        if delta_sec < lowest_delta_sec:
-            lowest_delta_sec = delta_sec
-            nearest_fcstTime_str = time_str
+        # Of forecast list elements, find the item with nearest time to "time" argument
+        #
+        # Given forecast list consists of (9 am, 12 am, 3 pm, 5 pm, 9 pm) and
+        # if "time" argument is 12 (hours) and current time is 8 am
+        # 9pm forecast will be acquired (nearest item from 8am + 12hours)
+        for item in json['response']['body']['items']['item']:
+            time_str = str(item['fcstDate']) + str(item['fcstTime'])
+            t = datetime.datetime.strptime(time_str, '%Y%m%d%H%M')
+            delta_sec = abs((time - t).total_seconds())
 
-    # parse forecast item
-    for item in json['response']['body']['items']['item']:
-        time_str = str(item['fcstDate']) + str(item['fcstTime'])
+            if delta_sec < lowest_delta_sec:
+                lowest_delta_sec = delta_sec
+                nearest_fcstTime_str = time_str
 
-        if time_str == nearest_fcstTime_str:
-            if item['category'] == 'T3H':
-                temperature = item['fcstValue']
-            elif item['category'] == 'PTY' and item['fcstValue'] != 0:
-                rain_code = item['fcstValue']
-            elif item['category'] == 'POP' and item['fcstValue'] != 0:
-                probability = item['fcstValue']
-            elif item['category'] == 'SKY':
-                sky_code = item['fcstValue']
+        # parse forecast item
+        for item in json['response']['body']['items']['item']:
+            time_str = str(item['fcstDate']) + str(item['fcstTime'])
 
-    if rain_code != 0:  # rainy or snowy?
-        weather_code = convert_rain_code(rain_code)
-    else:  # sunny or cloudy
-        weather_code = convert_sky_code(sky_code)
+            if time_str == nearest_fcstTime_str:
+                if item['category'] == 'T3H':
+                    temperature = item['fcstValue']
+                elif item['category'] == 'PTY' and item['fcstValue'] != 0:
+                    rain_code = item['fcstValue']
+                elif item['category'] == 'POP' and item['fcstValue'] != 0:
+                    probability = item['fcstValue']
+                elif item['category'] == 'SKY':
+                    sky_code = item['fcstValue']
+
+        if rain_code != 0:  # rainy or snowy?
+            weather_code = convert_rain_code(rain_code)
+        else:  # sunny or cloudy
+            weather_code = convert_sky_code(sky_code)
+
+    except KeyError:
+        weather_code = 0
 
     return temperature, weather_code, probability,
 
@@ -166,21 +171,24 @@ def weather_live_from_json(json):
     sky_code = 0
     probability = 0
 
-    for item in json['response']['body']['items']['item']:
-        if item['category'] == 'T1H':
-            temperature = item['obsrValue']
-        elif item['category'] == 'PTY' and item['obsrValue'] != 0:
-            rain_code = item['obsrValue']
-        elif item['category'] == 'SKY':
-            sky_code = item['obsrValue']
+    try:
+        for item in json['response']['body']['items']['item']:
+            if item['category'] == 'T1H':
+                temperature = item['obsrValue']
+            elif item['category'] == 'PTY' and item['obsrValue'] != 0:
+                rain_code = item['obsrValue']
+            elif item['category'] == 'SKY':
+                sky_code = item['obsrValue']
 
-    if rain_code != 0:  # rainy or snowy?
-        status = convert_rain_code(rain_code)
-        probability = 99  # no probability for live weather, set 99%
-    else:  # sunny or cloudy
-        status = convert_sky_code(sky_code)
+        if rain_code != 0:  # rainy or snowy?
+            weather_code = convert_rain_code(rain_code)
+            probability = 99  # no probability for live weather, set 99%
+        else:  # sunny or cloudy
+            weather_code= convert_sky_code(sky_code)
+    except KeyError:
+        weather_code = 0
 
-    return temperature, status, probability,
+    return temperature, weather_code, probability,
 
 
 def weather_to_str(weather):
@@ -204,8 +212,8 @@ def weather_to_str(weather):
     celsius_code = 223
     degree_sign = u'\N{DEGREE SIGN}'
 
-
     return u'{}{}{}{}'.format(temperature, python_unichr(celsius_code), status, probability)
+
 
 def weather_view(weathers):
     """

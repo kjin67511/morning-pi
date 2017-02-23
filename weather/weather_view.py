@@ -147,8 +147,9 @@ def weather_forecast_from_json(json, time):
         else:  # sunny or cloudy
             weather_code = convert_sky_code(sky_code)
 
-    except KeyError:
+    except KeyError as e:
         weather_code = 0
+        print("Key error", str(e))
 
     return temperature, weather_code, probability,
 
@@ -185,8 +186,9 @@ def weather_live_from_json(json):
             probability = 99  # no probability for live weather, set 99%
         else:  # sunny or cloudy
             weather_code= convert_sky_code(sky_code)
-    except KeyError:
+    except KeyError as e:
         weather_code = 0
+        print("Key error", str(e))
 
     return temperature, weather_code, probability,
 

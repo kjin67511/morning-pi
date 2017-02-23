@@ -14,14 +14,15 @@ live_basetime_delta = int(ConfigSectionMap("weather_basetime_delta")['live'])
 forecast_basetime_delta = int(ConfigSectionMap("weather_basetime_delta")['forecast'])
 
 key = ConfigSectionMap("api_key")['weather']
-now = datetime.datetime.now()
 
 
 def live_weather_request():
+    now = datetime.datetime.now()
     qs = create_weather_live_qs(key, nx, ny, now, live_basetime_delta)
     return grequests.get(make_url(live_api_url, qs))
 
 
 def forecast_weather_request():
+    now = datetime.datetime.now()
     qs = create_weather_forecast_qs(key, nx, ny, now, forecast_basetime_delta)
     return grequests.get(make_url(forecast_api_url, qs))

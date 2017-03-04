@@ -1,29 +1,33 @@
 from run import run
+import datetime
+from utils.timer import int_time, timer_list
 import time
 import lcd
 from config import ConfigSectionMap
 
 interval = int(ConfigSectionMap("run")['interval'])
 duration = int(ConfigSectionMap("run")['duration'])
+schedule_time = ConfigSectionMap("schedule")['time']
 
 timers = []
-start_time = time.time()
+start_time = int_time()
 elapsed_time = 0
+schedule_toggle = False
 
 
-def timer_list():
-    """
-    reset timer list
-    main loop will check timer list and pop the head item to consume
-    :return: list consists of second (0, 30, 60, ... 1800)
-    """
-    count = int(duration / interval)
+def check_schedule(time_str):
+    global schedule_toggle
 
-    l = []
-    for c in range(count + 1):
-        l.append(c * interval)
+    if schedule_toggle is True:
+        return False
 
-    return l
+    scheduled_time = time.strptime(time_str, "%H:%M")
+    current_time = datetime.datetime.now()
+
+    if scheduled_time.tm_hour == current_time.hour and scheduled_time.tm_min == current_time.minute:
+        return True
+    else:
+        return False
 
 
 def start_timer():
@@ -33,8 +37,8 @@ def start_timer():
     global start_time
     global elapsed_time
     global timers
-    timers = timer_list()
-    start_time = time.time()
+    timers = timer_list(duration, interval)
+    start_time = int_time()
     elapsed_time = 0
 
 
@@ -46,15 +50,17 @@ if __name__ == "__main__":
     if lcd.lcd is not None:
         try:
             while True:
-                elapsed_time = time.time() - start_time
+                elapsed_time = int_time() - start_time
 
-                if lcd.GPIO_input():
+                if lcd.GPIO_input() or check_schedule(schedule_time):
+                    schedule_toggle = True
                     start_timer()
 
                 if len(timers) > 0 and int(elapsed_time) == timers[0]:
                     timers.pop(0)
 
-                    if len(timers) == 0:
+                    if len(timers) == 0:  # end of timer
+                        schedule_toggle = False
                         lcd.clear()
                     else:
                         run()

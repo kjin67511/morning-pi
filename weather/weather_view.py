@@ -189,6 +189,9 @@ def weather_live_from_json(json):
     except KeyError as e:
         weather_code = 0
         print("Key error", str(e))
+    except TypeError as e:
+        weather_code = 0
+        print("Key error", str(e))
 
     return temperature, weather_code, probability,
 

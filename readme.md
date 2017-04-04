@@ -47,7 +47,7 @@ cd Adafruit_Python_CharLCD/
 sudo python setup.py install
 ```
 
-### API 및 추가 설정정보 요구사항
+## API 및 추가 설정정보 요구사항
 
 * 공공데이터포털 API 인증키
 * 설정 정보
@@ -55,7 +55,7 @@ sudo python setup.py install
   1. 정류장 ID
   1. 날씨위치좌표XY
 
-## 공공데이터 API 사용 신청하기
+### 공공데이터 API 인증키
 
 [공공데이터포털](https://www.data.go.kr) 가입 후 다음 API 신청
 
@@ -64,9 +64,9 @@ sudo python setup.py install
 * 정류소정보조회 서비스 (서울특별시)
 
 
-## 설정 정보
+### 설정 정보
 
-### 버스노선 ID
+#### 버스노선 ID
 
 http://ws.bus.go.kr/api/rest/busRouteInfo/getBusRouteList?serviceKey=인증키&strSrch=버스노선번호
 
@@ -96,14 +96,14 @@ HTTP Request가 정상적으로 처리되면, 해당 버스노선과 일치하�
 </itemList>
 ```
 
-### 정류 ID
+#### 정류 ID
 
 [다음지도](http://map.daum.net/)에서 버스노선번호 입력하면 정류소별 ID(5자리)를 알아낼 수 있음, 네이버지도에서는 제공하지 않음
 
 예) 종로1가 역: 01190
 
 
-### 날씨위치좌표 XY
+#### 날씨위치좌표 XY
 
 공동네예보정보조회서비스 기술문서에 포함되어 있는 동네예보조회서비스_격자_위경도 엑셀파일에서 원하는 지역의 좌표x, 좌표y를 획득
 

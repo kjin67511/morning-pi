@@ -47,10 +47,13 @@ cd Adafruit_Python_CharLCD/
 sudo python setup.py install
 ```
 
-### API 및 추가정보
+### API 및 추가 설정정보 요구사항
 
 * 공공데이터포털 API 인증키
-* 설정 정보: 버스노선 ID, 정류장 ID, 날씨위치좌표XY
+* 설정 정보
+  1. 버스노선 ID
+  1. 정류장 ID
+  1. 날씨위치좌표XY
 
 ## 공공데이터 API 사용 신청하기
 

@@ -21,9 +21,16 @@ def run():
     )
 
     weathers = list()
-    weathers.append(weather_live_from_json(weather_live_req.response.json()))
-    weathers.append(weather_forecast_from_json(weather_forecast_req.response.json(),
-                                               datetime.datetime.now() + datetime.timedelta(hours=12)))
+    if weather_live_req.response is not None:
+        weathers.append(weather_live_from_json(weather_live_req.response.json()))
+    else:
+        weathers.append(None)
+
+    if weather_forecast_req.response is not None:
+        weathers.append(weather_forecast_from_json(weather_forecast_req.response.json(),
+                                                   datetime.datetime.now() + datetime.timedelta(hours=12)))
+    else:
+        weathers.append(None)
 
     weather_str = weather_view(weathers)
 

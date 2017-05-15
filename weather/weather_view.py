@@ -150,7 +150,10 @@ def weather_forecast_from_json(json, time):
     except KeyError as e:
         weather_code = 0
         print("Key error", str(e))
-
+    except TypeError as e:
+        weather_code = 0
+        print("Key error", str(e))
+        
     return temperature, weather_code, probability,
 
 

@@ -150,7 +150,10 @@ def weather_forecast_from_json(json, time):
     except KeyError as e:
         weather_code = 0
         print("Key error", str(e))
-
+    except TypeError as e:
+        weather_code = 0
+        print("Key error", str(e))
+        
     return temperature, weather_code, probability,
 
 
@@ -203,8 +206,11 @@ def weather_to_str(weather):
     :param weather: list(temperature,  # rounded celsius in integer
                          weather_code, # S/R/L/W/-
                          probability,  # of snow or rain in integer xx)
-    :return: string "temp{Status}Probability|--"
+    :return: string "temp{Status}Probability|--" or "ERR"
     """
+
+    if weather is None:
+        return 'ERR'
 
     temperature = int(round(weather[0], 1))
     status = translate_weather_code(weather[1])

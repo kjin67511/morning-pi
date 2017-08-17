@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 import re
+import xml.etree.ElementTree
 from config import ConfigSectionMap
 
 route_id = ConfigSectionMap("bus")['route_id']
@@ -57,18 +58,23 @@ def arrivals_from_xml(root):
 
     arrivals = (None, None)
 
-    # find matching route
-    route_item = None
-    for item in root[2]:
-        if item.find('busRouteId').text == route_id:
-            route_item = item
-            break
+    try:
+        # find matching route
+        route_item = None
+        for item in root[2]:
+            if item.find('busRouteId').text == route_id:
+                route_item = item
+                break
 
-    if route_item is not None:
-        text1 = route_item.find('arrmsg1').text
-        arrival1 = convert_arrmsg(route_item.find('arrmsg1').text)
-        arrival2 = convert_arrmsg(route_item.find('arrmsg2').text)
-        arrivals = (arrival1, arrival2)
+        if route_item is not None:
+            text1 = route_item.find('arrmsg1').text
+            arrival1 = convert_arrmsg(route_item.find('arrmsg1').text)
+            arrival2 = convert_arrmsg(route_item.find('arrmsg2').text)
+            arrivals = (arrival1, arrival2)
+
+    except xml.etree.ElementTree.ParseError as e:
+        print("XML error", str(e))
+        print(xml.etree.ElementTree.tostring(root))
 
     return arrivals
 

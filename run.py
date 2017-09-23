@@ -2,10 +2,13 @@ from bus.bus_request import bus_request
 from bus.bus_view import arrivals_from_xml, bus_arrival_view
 from weather.weather_request import live_weather_request, forecast_weather_request
 from weather.weather_view import weather_live_from_json, weather_forecast_from_json, weather_view
+from dust.dust_request import dust_request
+from dust.dust_view import dust_from_xml, dust_view
 import grequests
 import datetime
 from xml.etree import ElementTree
 import lcd
+import re
 
 
 def run():
@@ -15,9 +18,10 @@ def run():
     weather_live_req = live_weather_request()
     weather_forecast_req = forecast_weather_request()
     bus_arrival_req = bus_request()
+    dust_req = dust_request()
 
     grequests.map(
-        (weather_live_req, weather_forecast_req, bus_arrival_req)
+        (weather_live_req, weather_forecast_req, bus_arrival_req, dust_req)
     )
 
     weathers = list()
@@ -36,7 +40,14 @@ def run():
 
     arrivals = arrivals_from_xml(ElementTree.fromstring(bus_arrival_req.response.content))
     bus_str = bus_arrival_view(arrivals)
-    lcd_str = bus_str + "\n" + weather_str
 
+
+    #s = dust_req.response.content.decode("utf-8").replace(">\\s*<", "><").replace("\r\n", "").replace("\t", "")
+    s = dust_req.response.content
+    s = s.decode("utf-8")
+    dusts = dust_from_xml(ElementTree.fromstring(s))
+    dust_str = dust_view(dusts)
+
+    lcd_str = bus_str + "\n" + weather_str
     lcd.clear()
     lcd.message(lcd_str)

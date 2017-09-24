@@ -221,9 +221,9 @@ def weather_to_str(weather):
         probability = ""
 
     celsius_code = 223
-    degree_sign = u'\N{DEGREE SIGN}'
 
-    return u'{}{}{}{}'.format(temperature, python_unichr(celsius_code), status, probability)
+    #return u'{}{}{}{}'.format(temperature, python_unichr(celsius_code), status, probability)
+    return u'{}{}{}'.format(temperature, status, probability)
 
 
 def weather_view(weathers):

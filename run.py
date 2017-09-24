@@ -1,27 +1,20 @@
-from bus.bus_request import bus_request
-from bus.bus_view import arrivals_from_xml, bus_arrival_view
-from weather.weather_request import live_weather_request, forecast_weather_request
-from weather.weather_view import weather_live_from_json, weather_forecast_from_json, weather_view
-from dust.dust_request import dust_request
-from dust.dust_view import dust_from_xml, dust_view
-import grequests
 import datetime
 from xml.etree import ElementTree
-import lcd
 
+import grequests
 
+from bus.bus_request import bus_request
+from bus.bus_view import arrivals_from_xml, bus_arrival_view
+from dust.dust_request import dust_request
+from dust.dust_view import dust_from_xml, dust_view
+from gpio import lcd
+from gpio import led
+from weather.weather_request import live_weather_request, forecast_weather_request
+from weather.weather_view import weather_live_from_json, weather_forecast_from_json, weather_view
 from config import ConfigSectionMap
-led_pin = int(ConfigSectionMap("dust")['led_pin'])
+
 pm10_threshold = int(ConfigSectionMap("dust")['pm10_threshold'])
 pm25_threshold = int(ConfigSectionMap("dust")['pm25_threshold'])
-
-try:
-    import RPi.GPIO as GPIO
-    GPIO.setmode(GPIO.BCM)
-    led = True
-    GPIO.setup(led_pin, GPIO.OUT)
-except ImportError:
-    led = False
 
 
 def run():
@@ -61,11 +54,10 @@ def run():
     lcd.clear()
     lcd.message(lcd_str)
 
-    GPIO.output(led_pin, GPIO.LOW)
+    led.off()
 
     if dusts[0] != '-' and int(dusts[0]) > pm10_threshold:
-        GPIO.output(led_pin, GPIO.HIGH)
+        led.on()
 
     if dusts[1] != '-' and int(dusts[1]) > pm25_threshold:
-        GPIO.output(led_pin, GPIO.HIGH)
-
+        led.on()

@@ -1,9 +1,10 @@
-from run import run
 import datetime
-from utils.timer import int_time, timer_list
 import time
-import lcd
+
 from config import ConfigSectionMap
+from gpio import lcd
+from run import run
+from utils.timer import int_time, timer_list
 
 interval = int(ConfigSectionMap("run")['interval'])
 duration = int(ConfigSectionMap("run")['duration'])

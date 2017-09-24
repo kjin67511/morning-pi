@@ -4,7 +4,11 @@ except ImportError:
     import ConfigParser as cp
 
 config = cp.RawConfigParser()
-config.read('config')
+
+try: #python2
+    config.read('config')
+except UnicodeDecodeError:
+    config.read('config',encoding='utf-8')
 
 def ConfigSectionMap(section):
     dict1 = {}

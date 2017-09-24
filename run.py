@@ -8,7 +8,20 @@ import grequests
 import datetime
 from xml.etree import ElementTree
 import lcd
-import re
+
+
+from config import ConfigSectionMap
+led_pin = int(ConfigSectionMap("dust")['led_pin'])
+pm10_threshold = int(ConfigSectionMap("dust")['pm10_threshold'])
+pm25_threshold = int(ConfigSectionMap("dust")['pm25_threshold'])
+
+try:
+    import RPi.GPIO as GPIO
+    GPIO.setmode(GPIO.BCM)
+    led = True
+    GPIO.setup(led_pin, GPIO.OUT)
+except ImportError:
+    led = False
 
 
 def run():
@@ -41,13 +54,18 @@ def run():
     arrivals = arrivals_from_xml(ElementTree.fromstring(bus_arrival_req.response.content))
     bus_str = bus_arrival_view(arrivals)
 
-
-    #s = dust_req.response.content.decode("utf-8").replace(">\\s*<", "><").replace("\r\n", "").replace("\t", "")
-    s = dust_req.response.content
-    s = s.decode("utf-8")
-    dusts = dust_from_xml(ElementTree.fromstring(s))
+    dusts = dust_from_xml(ElementTree.fromstring(dust_req.response.content))
     dust_str = dust_view(dusts)
 
-    lcd_str = bus_str + "\n" + weather_str
+    lcd_str = bus_str + "\n" + weather_str + " " + dust_str
     lcd.clear()
     lcd.message(lcd_str)
+
+    GPIO.output(led_pin, GPIO.LOW)
+
+    if dusts[0] != '-' and int(dusts[0]) > pm10_threshold:
+        GPIO.output(led_pin, GPIO.HIGH)
+
+    if dusts[1] != '-' and int(dusts[1]) > pm25_threshold:
+        GPIO.output(led_pin, GPIO.HIGH)
+

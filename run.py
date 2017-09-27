@@ -44,11 +44,19 @@ def run():
 
     weather_str = weather_view(weathers)
 
-    arrivals = arrivals_from_xml(ElementTree.fromstring(bus_arrival_req.response.content))
-    bus_str = bus_arrival_view(arrivals)
+    try:
+        bus_xml = ElementTree.fromstring(bus_arrival_req.response.content)
+        arrivals = arrivals_from_xml(bus_xml)
+        bus_str = bus_arrival_view(arrivals)
+    except ElementTree.ParseError:
+        bus_str = "Error"
 
-    dusts = dust_from_xml(ElementTree.fromstring(dust_req.response.content))
-    dust_str = dust_view(dusts)
+    try:
+        dust_xml = ElementTree.fromstring(dust_req.response.content)
+        dusts = dust_from_xml(dust_xml)
+        dust_str = dust_view(dusts)
+    except ElementTree.ParseError:
+        dust_str = "Error"
 
     lcd_str = bus_str + "\n" + weather_str + " " + dust_str
     lcd.clear()

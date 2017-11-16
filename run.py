@@ -51,21 +51,25 @@ def run():
     except ElementTree.ParseError:
         bus_str = "Error"
 
+
+
     try:
         dust_xml = ElementTree.fromstring(dust_req.response.content)
         dusts = dust_from_xml(dust_xml)
         dust_str = dust_view(dusts)
     except ElementTree.ParseError:
         dust_str = "Error"
+        dusts = None
 
     lcd_str = bus_str + "\n" + weather_str + " " + dust_str
     lcd.clear()
     lcd.message(lcd_str)
 
-    led.off()
+    if dusts is not None:
+        led.off()
 
-    if dusts[0] != '-' and int(dusts[0]) > pm10_threshold:
-        led.on()
+        if dusts[0] != '-' and int(dusts[0]) > pm10_threshold:
+            led.on()
 
-    if dusts[1] != '-' and int(dusts[1]) > pm25_threshold:
-        led.on()
+        if dusts[1] != '-' and int(dusts[1]) > pm25_threshold:
+            led.on()

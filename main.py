@@ -2,8 +2,7 @@ import datetime
 import time
 
 from config import ConfigSectionMap
-from gpio import lcd
-from run import run
+from run import run, reset, button_pushed, lcd_ready
 from utils.timer import int_time, timer_list
 
 interval = int(ConfigSectionMap("run")['interval'])
@@ -48,12 +47,12 @@ if __name__ == "__main__":
 
     start_timer()
 
-    if lcd.lcd is not None:
+    if lcd_ready():
         try:
             while True:
                 elapsed_time = int_time() - start_time
 
-                if lcd.GPIO_input() or check_schedule(schedule_time):
+                if button_pushed() or check_schedule(schedule_time):
                     schedule_toggle = True
                     start_timer()
 
@@ -62,12 +61,12 @@ if __name__ == "__main__":
 
                     if len(timers) == 0:  # end of timer
                         schedule_toggle = False
-                        lcd.clear()
+                        reset()
                     else:
                         run()
 
                 time.sleep(0.01)
         except KeyboardInterrupt:
-            lcd.clear()
+            reset()
     else:  # test purpose in non-rpi
         run()

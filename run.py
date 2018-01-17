@@ -51,8 +51,6 @@ def run():
     except ElementTree.ParseError:
         bus_str = "Error"
 
-
-
     try:
         dust_xml = ElementTree.fromstring(dust_req.response.content)
         dusts = dust_from_xml(dust_xml)
@@ -74,12 +72,15 @@ def run():
         if dusts[1] != '-' and int(dusts[1]) > pm25_threshold:
             led.on()
 
+
 def reset():
     lcd.clear()
     led.off()
 
+
 def button_pushed():
     return lcd.GPIO_input()
+
 
 def lcd_ready():
     return lcd.lcd is not None

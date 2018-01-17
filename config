@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 [gpio]
 input_pin: 31
 
@@ -9,7 +11,6 @@ d5: 24
 d6: 23
 d7: 18
 
-
 [bus]
 station_id: 01190
 route_id: 100100086
@@ -18,6 +19,12 @@ route_id: 100100086
 nx: 60
 ny: 127
 
+[dust]
+station_name: 청계천로
+pm10_threshold: 80
+pm25_threshold: 50
+led_pin:29
+
 [weather_basetime_delta]
 live: -45
 forecast: -15
@@ -25,7 +32,7 @@ forecast: -15
 [api_key]
 bus:
 weather:
-
+dust:
 
 [run]
 interval: 30

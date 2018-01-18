@@ -12,7 +12,7 @@ d6: 23
 d7: 18
 
 [bus]
-station_id: 01190
+station_id: 01012
 route_id: 100100086
 
 [weather]
